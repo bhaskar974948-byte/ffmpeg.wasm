@@ -1,0 +1,16 @@
+import express from "express";
+import { exec } from "child_process";
+
+const app = express();
+
+app.get("/trim", (req, res) => {
+  const input = "input.mp4";
+  const output = "output.mp4";
+
+  exec(`ffmpeg -i ${input} -ss 00:00:10 -to 00:00:20 -c copy ${output}`, (err) => {
+    if (err) return res.send("Error trimming video");
+    res.download(output);
+  });
+});
+
+app.listen(3000, () => console.log("Server running on port 3000"));
